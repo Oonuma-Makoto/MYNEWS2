@@ -20,8 +20,8 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('profile/create','Admin\ProfileController@add')->middleware('auth');
     Route::get('profile/edit','Admin\ProfileController@edit')->middleware('auth');
     Route::post('news/create', 'Admin\NewsController@create'); 
-    Route::post('profile/create','Admin\ProfileController@create');
-    Route::post('profile/edit', 'Admin\ProfileController@update');
+    /*課題3*/Route::post('profile/create','Admin\ProfileController@create');
+    /*課題6*/Route::post('profile/edit', 'Admin\ProfileController@update');
 });
 Auth::routes();
 
