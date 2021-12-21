@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 
 
 use App\Profile;
+use Carbon\Carbon;
+use App\ProfileHistory;
 
 class ProfileController extends Controller
 {
@@ -47,9 +49,25 @@ class ProfileController extends Controller
       return view('admin.profile.edit',['profile_form' => $profile]);
   }
 
-  public function update()
+  public function update(Request $request)
   {
-      return redirect('admin/profile/edit');
+          // Validationをかける
+          $this->validate($request, Profile::$rules);
+      
+          $profile = Profile::find($request->id);
+          
+          $profile_form = $request->all();
+          unset($profile_form['_token']);
+
+           // 該当するデータを上書きして保存する
+      $profile->fill($profile_form)->save();
+      
+      $history_profile = new HistoryProfile();
+      $history_profile->profile_id = $profile->id;
+      $history_profile->edited_at = Carbon::now();
+      $history_profile->save();
+
+      return redirect('admin/profile/');
   }
 
 }
